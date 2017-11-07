@@ -32,6 +32,10 @@
       margin: 0;
       overflow: hidden;
       }
+	  #stdout {
+	  overflow: hidden;
+	  flex: 1;
+	  }
       body > div {
       flex: 1;
       }
@@ -57,6 +61,21 @@
 	<script src="./js/moonshine/DOMAPI.moonshine.js"></script>
 	<script src="./js/moonshine/distillery.moonshine.js"></script>
 	<script src="./js/moonshine/luac/luac.moonshine.js"></script>
+	
+    <style type="text/css" media="screen">
+	pre {
+	  top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+	  margin: 0;
+	  }
+	 
+	.nav-item {
+		padding-right:5px;
+	}
+	</style> 
+	
   </head>
   <body>
 
@@ -64,11 +83,11 @@
 <!--   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button> -->
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">Lua Editor</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item dropdown" style="padding-right:5px;">
+      <li class="nav-item dropdown">
 	  <div class="dropdown">
 		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Theme: clouds</button>
 		  <div class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu">
@@ -115,7 +134,10 @@
 		</div>
       </li>
 	  <li class="nav-item button">
-		<Button id="runBtn" class="btn btn-outline-success">Run<span class="oi oi-media-play"></span></Button>
+		<Button id="runBtn" class="btn btn-outline-success">Run</Button>
+	  </li>
+	  <li class="nav-item button">
+		<Button id="clrBtn" class="btn btn-outline-primary">Clear Output</Button>
 	  </li>
 	</ul>
   </div>
@@ -125,7 +147,7 @@
       <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
     </div>
     <div id="hline"></div>
-    <pre><section id="stdout" style="flex: 1;"></section></pre>
+    <pre style="flex: 1;"><section id="stdout" style="flex: 1;"></section></pre>
 	
 	<script>
         var editor = ace.edit("editor");
@@ -159,6 +181,11 @@
 		$('#runBtn').click(function(){
 			run();
 		});
+		
+		$('#clrBtn').click(function(){
+			var out = document.getElementById("stdout");
+			out.textContent = "";
+		});
             
 		function escapeHTML(text) {
 			return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -169,7 +196,9 @@
 		return {
 			print: function(message) {
 				var out = document.getElementById("stdout");
-				out.textContent += escapeHTML(message) + '\n'
+				out.textContent += escapeHTML(message) + '\n';
+				var pre = $(out).parent();
+				pre[0].scrollTop = pre[0].scrollHeight;
 				//console.log(msg);
 			},
 			
