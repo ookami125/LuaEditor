@@ -175,6 +175,12 @@
         });
 		
 		var vm;
+		
+		shine.stdout.write = function (message) {
+			var out = document.getElementById("stdout");
+			out.textContent += escapeHTML(message) + '\n';
+		};
+		
 		vm = new shine.VM(getAPI());
 		shine.luac.init(vm);
 		
@@ -194,14 +200,6 @@
 		function getAPI () {
 
 		return {
-			print: function(message) {
-				var out = document.getElementById("stdout");
-				out.textContent += escapeHTML(message) + '\n';
-				var pre = $(out).parent();
-				pre[0].scrollTop = pre[0].scrollHeight;
-				//console.log(msg);
-			},
-			
 			clearInterval: function (ref) {
 				intervals.splice(intervals.indexOf(ref), 1);
 				return window.clearInterval(ref);
