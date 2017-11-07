@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Editor</title>
+    <style type="text/css" media="screen">
+      html, body {
+      height:100%;
+      width:100%;
+      display: flex;
+      flex-direction: column;
+      }
+      #editor {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: auto;
+      height: auto;
+      position:relative!important;
+      margin: 0;
+      }
+      #editorParent {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: auto;
+      height: auto;
+      position:relative!important;
+      margin: 0;
+      overflow: hidden;
+      }
+      body > div {
+      flex: 1;
+      }
+      #hline {
+      flex: 0;
+      flex-basis: 4px;
+      background-color: #353535;
+      }
+      .scrollable-menu {
+      height: auto;
+      max-height: 200px;
+      overflow-x: hidden;
+      }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/jquery.resize.js"></script>
+	<script type="text/javascript" src="js/attrchange.js"></script>
+	<script type="text/javascript" src="js/attrchange_ext.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<script src="/js/moonshine/moonshine.js"></script>
+	<script src="/js/moonshine/DOMAPI.moonshine.js"></script>
+	<script src="/js/moonshine/distillery.moonshine.js"></script>
+	<script src="/js/moonshine/luac/luac.moonshine.js"></script>
+  </head>
+  <body>
+
+  <nav class="navbar navbar-toggleable-md navbar-light bg-faded" style="flex-direction: row;">
+<!--   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button> -->
+  <a class="navbar-brand" href="#">Navbar</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown" style="padding-right:5px;">
+	  <div class="dropdown">
+		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Theme: clouds</button>
+		  <div class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu">
+			<h6 class="dropdown-header" style="color:#000;">Light:</h6>
+			<button class="dropdown-item btn-sm" type="button">chrome</button>
+			<button class="dropdown-item btn-sm" type="button">clouds</button>
+			<button class="dropdown-item btn-sm" type="button">crimson_editor</button>
+			<button class="dropdown-item btn-sm" type="button">dawn</button>
+			<button class="dropdown-item btn-sm" type="button">dreamweaver</button>
+			<button class="dropdown-item btn-sm" type="button">eclipse</button>
+			<button class="dropdown-item btn-sm" type="button">github</button>
+			<button class="dropdown-item btn-sm" type="button">iplastic</button>
+			<button class="dropdown-item btn-sm" type="button">katzenmilch</button>
+			<button class="dropdown-item btn-sm" type="button">kuroir</button>
+			<button class="dropdown-item btn-sm" type="button">solarized_light</button>
+			<button class="dropdown-item btn-sm" type="button">sqlserver</button>
+			<button class="dropdown-item btn-sm" type="button">textmate</button>
+			<button class="dropdown-item btn-sm" type="button">tomorrow</button>
+			<button class="dropdown-item btn-sm" type="button">xcode</button>
+			<h6 class="dropdown-header" style="color:#000;">Dark:</h6>
+			<button class="dropdown-item btn-sm" type="button">ambiance</button>
+			<button class="dropdown-item btn-sm" type="button">chaos</button>
+			<button class="dropdown-item btn-sm" type="button">clouds_midnight</button>
+			<button class="dropdown-item btn-sm" type="button">cobalt</button>
+			<button class="dropdown-item btn-sm" type="button">dracula</button>
+			<button class="dropdown-item btn-sm" type="button">gob</button>
+			<button class="dropdown-item btn-sm" type="button">gruvbox</button>
+			<button class="dropdown-item btn-sm" type="button">idle_fingers</button>
+			<button class="dropdown-item btn-sm" type="button">kr_theme</button>
+			<button class="dropdown-item btn-sm" type="button">merbivore</button>
+			<button class="dropdown-item btn-sm" type="button">merbivore_soft</button>
+			<button class="dropdown-item btn-sm" type="button">monokai</button>
+			<button class="dropdown-item btn-sm" type="button">mono_industrial</button>
+			<button class="dropdown-item btn-sm" type="button">pastel_on_dark</button>
+			<button class="dropdown-item btn-sm" type="button">solarized_dark</button>
+			<button class="dropdown-item btn-sm" type="button">terminal</button>
+			<button class="dropdown-item btn-sm" type="button">tomorrow_night</button>
+			<button class="dropdown-item btn-sm" type="button">tomorrow_night_blue</button>
+			<button class="dropdown-item btn-sm" type="button">tomorrow_night_bright</button>
+			<button class="dropdown-item btn-sm" type="button">tomorrow_night_eighties</button>
+			<button class="dropdown-item btn-sm" type="button">twilight</button>
+			<button class="dropdown-item btn-sm" type="button">vibrant_ink</button>
+		  </div>
+		</div>
+      </li>
+	  <li class="nav-item button">
+		<Button id="runBtn" class="btn btn-outline-success">Run<span class="oi oi-media-play"></span></Button>
+	  </li>
+	</ul>
+  </div>
+</nav>
+    <div id="editorParent" style="flex-basis:50%;">
+      <pre id="editor">print("Hello World!");</pre>
+      <script src="js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    </div>
+    <div id="hline"></div>
+    <pre><section id="stdout" style="flex: 1;"></section></pre>
+	
+	<script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/clouds", function() {
+			var color = $(".ace_gutter").css('background-color');
+			$("#hline").css("background-color", color);		
+		});
+        editor.session.setMode("ace/mode/lua");
+        editor.setAutoScrollEditorIntoView(true);
+        editor.setOptions({
+            minLines: 30
+        });
+        
+        $('#editorParent').resize(function() {
+        	$('#editor').css('min-height', ($(this).height())+'px');
+        });
+        
+        $('.dropdown-item').on('click', function () {
+        	var theme = $(this).html();
+			editor.setTheme("ace/theme/"+theme, function() {
+				var color = $(".ace_gutter").css('background-color');
+				$("#hline").css("background-color", color);		
+			});
+        	$("#dropdownMenu").html("Theme: "+theme);
+        });
+		
+		var vm;
+		vm = new shine.VM(getAPI());
+		shine.luac.init(vm);
+		
+		$('#runBtn').click(function(){
+			run();
+		});
+            
+		function escapeHTML(text) {
+			return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+		}
+	
+		function getAPI () {
+
+		return {
+			print: function(message) {
+				var out = document.getElementById("stdout");
+				out.textContent += escapeHTML(message) + '\n'
+				//console.log(msg);
+			},
+			
+			clearInterval: function (ref) {
+				intervals.splice(intervals.indexOf(ref), 1);
+				return window.clearInterval(ref);
+			},
+
+
+			clearTimeout: function (ref) {
+				timeouts.splice(timeouts.indexOf(ref), 1);
+				return window.clearTimeout(ref);
+			},
+
+
+			getTimestamp: function () { 
+				return Date.now(); 
+			},
+
+
+			setInterval: function (callback, duration) {
+				var ref = window.setInterval(function () {
+					callback.apply();
+				}, duration);
+
+				intervals.push(ref);
+				return ref;
+			},
+
+
+			setTimeout: function (callback, duration) {
+				var ref = window.setTimeout(function () {
+					timeouts.splice(timeouts.indexOf(ref), 1);
+					callback.apply();
+				}, duration);
+
+				timeouts.push(ref);
+				return ref;
+			}
+		};
+	}
+	
+	function run () {
+		vm._resetGlobals();
+
+		compileOffline(editor.getValue(), function (err, bc) {
+			if (err) {
+				window.alert('Compile error: ' + err);
+				editor.focus();
+			} else {
+				vm.load(bc);
+			}
+		});
+	}
+
+	function compileOffline (code, callback) {
+		console.log('Compiling offline...');
+
+		window.setTimeout(function () {
+			shine.luac.compile(code, function (err, bc) {
+				if (err) {
+					callback(err.substr(13).split('\n')[0]);
+				} else {
+					callback(undefined, bc);
+				}
+			})
+		}, 1);
+	}			
+      </script>
+  </body>
+</html>
